@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import br.facens.registerevent.dto.RegisterInsertDTO;
+
 @Entity
 @Table(name = "TB_REGISTER")
 public class Register implements Serializable{
@@ -30,7 +32,21 @@ public class Register implements Serializable{
     private LocalTime endTime;
     private String emailContact;
     
-// Metodos Getters
+
+    public Register() {
+    }
+    public Register(RegisterInsertDTO dto) {
+        this.name = dto.getName();
+        this.description = dto.getDescription();
+        this.place = dto.getPlace();
+        this.startDate = dto.getStartDate();
+        this.endDate = dto.getEndDate();
+        this.startTime = dto.getStartTime();
+        this.endTime = dto.getEndTime();
+        this.emailContact = dto.getEmailContact();
+    }
+
+    // Metodos Getters
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
@@ -114,6 +130,8 @@ public class Register implements Serializable{
             return false;
         return true;
     }
+    
+    
 
     
 }

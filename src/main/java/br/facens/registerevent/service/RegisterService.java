@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.facens.registerevent.dto.RegisterDTO;
+import br.facens.registerevent.dto.RegisterInsertDTO;
 import br.facens.registerevent.entities.Register;
 import br.facens.registerevent.repository.RegisterRepository;
 
@@ -27,7 +28,7 @@ public class RegisterService {
     private List<RegisterDTO> toDTOList(List<Register> list) {
         List<RegisterDTO> listDTO = new ArrayList<>();
         for(Register r : list){
-            RegisterDTO dto = new RegisterDTO(r.getId(), r.getName(), r.getDescription(), r.getPlace(), r.getStartDate(), r.getEndDate(), r.getEndTime(), r.getEndTime());
+            RegisterDTO dto = new RegisterDTO(r.getId(), r.getName(), r.getDescription(), r.getPlace(), r.getStartDate(), r.getEndDate(), r.getStartTime(), r.getEndTime());
             listDTO.add(dto);
         }
         return listDTO;
@@ -37,6 +38,12 @@ public class RegisterService {
         Optional<Register> op = repo.findById(id);
         Register reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Register not foud"));
         return new RegisterDTO(reg);
+    }
+
+    public RegisterDTO insert(RegisterInsertDTO dto){
+        Register entity = new Register(dto); 
+        entity = repo.save(entity);
+        return new RegisterDTO(entity);
     }
 
 
