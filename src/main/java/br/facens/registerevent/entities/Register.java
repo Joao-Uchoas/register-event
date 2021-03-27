@@ -1,5 +1,6 @@
 package br.facens.registerevent.entities;
 
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -11,14 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Registers")
-public class Registers implements Serializable{
+@Table(name = "TB_REGISTER")
+public class Register implements Serializable{
    
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     
     private String name;
     private String description;
@@ -90,9 +91,6 @@ public class Registers implements Serializable{
     public void setEmailContact(String emailContact) {
         this.emailContact = emailContact;
     }
-
-
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -117,10 +115,5 @@ public class Registers implements Serializable{
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Register [description=" + description + ", emailContact=" + emailContact + ", endDate=" + endDate
-                + ", endTime=" + endTime + ", id=" + id + ", name=" + name + ", place=" + place + ", startDate="
-                + startDate + ", startTime=" + startTime + "]";
-    }
+    
 }

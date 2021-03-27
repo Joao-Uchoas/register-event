@@ -1,2 +1,2 @@
-INSERT INTO tb_registers (name, description, place, startDate, endDate, startTime, endTime, emailContact) 
-                VALUES ('Maria Silva', 'Aniversario','Rua Tereza, 23 – Sorocaba/SP', '01/02/2022', '01/02/2022', '12:00', '18:00', 'mariasilva@gmail.com');
+INSERT INTO tb_register (name,description,place,start_date, end_date,start_time,end_time,email_contact) 
+VALUES ('João','Aniversário','Jardim dos Anões','2022-01-01','2022-01-01','12:00','18:00','joaouchoas@gmail.com'); 

@@ -3,9 +3,9 @@ package br.facens.registerevent.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import br.facens.registerevent.entities.Registers;
+import br.facens.registerevent.entities.Register;
 
-public class RegistersDTO {
+public class RegisterDTO {
     private Long id;
     private String name;
     private String description;
@@ -16,9 +16,9 @@ public class RegistersDTO {
     private LocalTime endTime;
 
    
-    public RegistersDTO() {
+    public RegisterDTO() {
     }
-    public RegistersDTO(Long id, String name, String description, String place, LocalDate startDate, LocalDate endDate,
+    public RegisterDTO(Long id, String name, String description, String place, LocalDate startDate, LocalDate endDate,
             LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.name = name;
@@ -29,7 +29,7 @@ public class RegistersDTO {
         this.startTime = startTime;
         this.endTime = endTime;
     }
-    public RegistersDTO(Registers reg) {
+    public RegisterDTO(Register reg) {
         this.id = reg.getId();
         this.name = reg.getName();
         this.description = reg.getDescription();
