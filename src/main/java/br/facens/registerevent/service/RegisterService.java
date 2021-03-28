@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.facens.registerevent.dto.RegisterDTO;
 import br.facens.registerevent.dto.RegisterInsertDTO;
+import br.facens.registerevent.dto.RegisterUpdateDTO;
 import br.facens.registerevent.entities.Register;
 import br.facens.registerevent.repository.RegisterRepository;
 
@@ -52,6 +55,18 @@ public class RegisterService {
             repo.deleteById(id);
         }
         catch(EmptyResultDataAccessException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found");
+        }
+    }
+
+    public RegisterDTO update(Long id, RegisterUpdateDTO dto){
+        try {
+            Register entity = repo.getOne(id);
+            entity.setName(dto.getName());
+            entity.setEmailContact(dto.getEmailContact());
+            entity = repo.save(entity);
+            return new RegisterDTO(entity);
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found");
         }
     }
