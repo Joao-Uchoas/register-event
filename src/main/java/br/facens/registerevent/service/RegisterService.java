@@ -29,7 +29,7 @@ public class RegisterService {
     private List<RegisterDTO> toDTOList(List<Register> list) {
         List<RegisterDTO> listDTO = new ArrayList<>();
         for(Register r : list){
-            RegisterDTO dto = new RegisterDTO(r.getId(), r.getName(), r.getDescription(), r.getPlace(), r.getStartDate(), r.getEndDate(), r.getStartTime(), r.getEndTime());
+            RegisterDTO dto = new RegisterDTO(r.getId(), r.getName(), r.getDescription(), r.getEmailContact());
             listDTO.add(dto);
         }
         return listDTO;
@@ -48,11 +48,13 @@ public class RegisterService {
     }
 
     public void delete(Long id){
-        try {
+        try{
             repo.deleteById(id);
-        } catch(EmptyResultDataAccessException e){
+        }
+        catch(EmptyResultDataAccessException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found");
         }
     }
+
     
 }
