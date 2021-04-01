@@ -1,5 +1,6 @@
 package br.facens.registerevent.service;
 
+
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -25,8 +26,8 @@ public class RegisterService {
     @Autowired
     private RegisterRepository repo;
 
-    public Page<RegisterDTO> getRegisters(PageRequest pageRequest, String name, String place, String description){
-        Page<Register> list = repo.find(pageRequest, name, place, description);
+    public Page<RegisterDTO> getRegisters(PageRequest pageRequest, String name, String place, LocalDate startDate,String description){
+        Page<Register> list = repo.find(pageRequest, name, place, startDate, description);
         return list.map( r -> new RegisterDTO(r));
     }
 

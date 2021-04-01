@@ -1,5 +1,7 @@
 package br.facens.registerevent.repository;
 
+import java.time.LocalDate;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,8 +17,9 @@ public interface RegisterRepository extends JpaRepository<Register,Long>{
             "WHERE"+ 
             "(r.name LIKE CONCAT('%', :name, '%')) AND " +
             "(r.place LIKE CONCAT('%', :place, '%')) AND"+
+            "(r.startDate LIKE CONCAT('%', :startDate, '%')) AND"+
             "(r.description LIKE CONCAT('%', :description, '%'))"
     )
-    public Page<Register> find(Pageable pageRequest, String name, String place, String description);
+    public Page<Register> find(Pageable pageRequest, String name, String place, LocalDate startDate,String description);
     
 }

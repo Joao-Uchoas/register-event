@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +42,9 @@ public class RegisterController {
         @RequestParam(value = "orderBy",        defaultValue = "id") String orderBy,
         @RequestParam(value = "name",           defaultValue = "") String  name,
         @RequestParam(value = "place",          defaultValue = "") String  place,
-        //@RequestParam(value = "startDate",      defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate  startDate//Não sei como fazer
+        @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,// a data tem que colocar "ano/mes/dia" e não só um valor... 
+                                                            //exemplo 01, ele não vai achar o dia 01 ou o mes 01,
+                                                            //mas acharia 2022-01-01.
         @RequestParam(value = "description",    defaultValue = "") String  description
 
 
@@ -48,7 +52,7 @@ public class RegisterController {
 
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
 
-        Page<RegisterDTO> list = service.getRegisters(pageRequest, name, place, description);
+        Page<RegisterDTO> list = service.getRegisters(pageRequest, name, place, startDate, description);
         return ResponseEntity.ok(list);
     }
 
