@@ -27,7 +27,7 @@ import br.facens.registerevent.dto.EventUpdateDTO;
 import br.facens.registerevent.service.EventService;
 
 @RestController
-@RequestMapping("/registers")
+@RequestMapping("/events")
 public class EventController {
     
     @Autowired
