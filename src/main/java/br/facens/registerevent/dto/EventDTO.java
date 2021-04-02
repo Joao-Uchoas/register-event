@@ -1,11 +1,25 @@
 package br.facens.registerevent.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.Length;
+
 import br.facens.registerevent.entities.Event;
 
 public class EventDTO {
     private Long id;
+
+    @NotBlank(message = "Preencher o nome.")
+    @Length(min = 3, max = 50, message = "O nome deve ter no minino 3 caracteres e no maximo 50 caracteres.")
     private String name;
+
+
+    @NotBlank(message = "Preencher a descrição.")
+    @Length(min = 3, max = 70, message = "A descrição deve ter no minino 3 caracteres e no maximo 70 caracteres.")
     private String description;
+    
+    @Email
     private String emailContact;
 
 

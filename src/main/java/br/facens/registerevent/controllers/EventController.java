@@ -3,6 +3,8 @@ package br.facens.registerevent.controllers;
 import java.net.URI;
 import java.time.LocalDate;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +36,7 @@ public class EventController {
     private EventService service;
 
     @GetMapping
-    public ResponseEntity<Page<EventDTO>> getRegister(
+    public ResponseEntity<Page<EventDTO>> getEvent(
 
         @RequestParam(value = "page",           defaultValue = "0") Integer page,
         @RequestParam(value = "linesPerPage",   defaultValue = "5") Integer linesPerPage,
@@ -52,18 +54,18 @@ public class EventController {
 
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
 
-        Page<EventDTO> list = service.getRegisters(pageRequest, name, place, startDate, description);
+        Page<EventDTO> list = service.getEvents(pageRequest, name, place, startDate, description);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<EventDTO> getRegisterById(@PathVariable Long id){
-        EventDTO dto = service.getRegisterById(id);
+    public ResponseEntity<EventDTO> getEventById(@PathVariable Long id){
+        EventDTO dto = service.getEventById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<EventDTO> insert(@RequestBody EventInsertDTO insertDto){
+    public ResponseEntity<EventDTO> insert(@Valid @RequestBody EventInsertDTO insertDto){
         EventDTO dto = service.insert(insertDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
@@ -76,7 +78,7 @@ public class EventController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<EventDTO> update(@PathVariable Long id, @RequestBody EventUpdateDTO updateDto){
+    public ResponseEntity<EventDTO> update(@PathVariable Long id,@Valid @RequestBody EventUpdateDTO updateDto){
         EventDTO dto = service.update(id, updateDto);
         return ResponseEntity.ok().body(dto);
     }

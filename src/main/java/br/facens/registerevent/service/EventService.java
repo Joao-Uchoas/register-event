@@ -26,7 +26,7 @@ public class EventService {
     @Autowired
     private EventRepository repo;
 
-    public Page<EventDTO> getRegisters(PageRequest pageRequest, String name, String place, LocalDate startDate,String description){
+    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String place, LocalDate startDate,String description){
         Page<Event> list = repo.find(pageRequest, name, place, startDate, description);
         return list.map( r -> new EventDTO(r));
     }
@@ -43,9 +43,9 @@ public class EventService {
         return listDTO;
     }
 */
-    public EventDTO getRegisterById(Long id){
+    public EventDTO getEventById(Long id){
         Optional<Event> op = repo.findById(id);
-        Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Register not foud"));
+        Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not foud"));
         return new EventDTO(reg);
     }
 

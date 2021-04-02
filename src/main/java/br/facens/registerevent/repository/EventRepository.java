@@ -13,7 +13,7 @@ import br.facens.registerevent.entities.Event;
 public interface EventRepository extends JpaRepository<Event,Long>{
     
     //Consulta JPQL!!!
-    @Query("SELECT r FROM Register r " + 
+    @Query("SELECT r FROM Event r " + 
             "WHERE"+ 
             "(r.name LIKE CONCAT('%', :name, '%')) AND " +
             "(r.place LIKE CONCAT('%', :place, '%')) AND"+

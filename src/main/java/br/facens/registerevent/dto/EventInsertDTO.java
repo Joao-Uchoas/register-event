@@ -3,14 +3,39 @@ package br.facens.registerevent.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jdk.jfr.Timestamp;
+
 public class EventInsertDTO {
+
+    @NotBlank(message = "Preencher o nome.")
+    @Length(min = 3, max = 50, message = "O nome deve ter no minino 3 caracteres e no maximo 50 caracteres.")
     private String name;
+
+    @NotBlank(message = "Preencher a descrição.")
+    @Length(min = 3, max = 70, message = "A descrição deve ter no minino 3 caracteres e no maximo 70 caracteres.")
     private String description;
+
+    @NotBlank(message = "Preencher o local.")
+    @Length(min = 3, max = 100, message = "O local deve ter no minino 3 caracteres e no maximo 100 caracteres.")
     private String place;
+
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate endDate;
+
+    @Timestamp
     private LocalTime startTime;
+    @Timestamp
     private LocalTime endTime;
+
+    @Email
     private String emailContact;
     
     public String getName() {
