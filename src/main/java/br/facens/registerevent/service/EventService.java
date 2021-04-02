@@ -1,0 +1,80 @@
+package br.facens.registerevent.service;
+
+
+import java.time.LocalDate;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import br.facens.registerevent.dto.EventDTO;
+import br.facens.registerevent.dto.EventInsertDTO;
+import br.facens.registerevent.dto.EventUpdateDTO;
+import br.facens.registerevent.entities.Event;
+import br.facens.registerevent.repository.EventRepository;
+
+@Service
+public class EventService {
+    
+    @Autowired
+    private EventRepository repo;
+
+    public Page<EventDTO> getRegisters(PageRequest pageRequest, String name, String place, LocalDate startDate,String description){
+        Page<Event> list = repo.find(pageRequest, name, place, startDate, description);
+        return list.map( r -> new EventDTO(r));
+    }
+
+
+//  toDTOList foi mudado para fazer a listagem paginada
+    /*
+    private List<RegisterDTO> toDTOList(List<Register> list) {
+        List<RegisterDTO> listDTO = new ArrayList<>();
+        for(Register r : list){
+            RegisterDTO dto = new RegisterDTO(r.getId(), r.getName(), r.getDescription(), r.getEmailContact());
+            listDTO.add(dto);
+        }
+        return listDTO;
+    }
+*/
+    public EventDTO getRegisterById(Long id){
+        Optional<Event> op = repo.findById(id);
+        Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Register not foud"));
+        return new EventDTO(reg);
+    }
+
+    public EventDTO insert(EventInsertDTO dto){
+        Event entity = new Event(dto); 
+        entity = repo.save(entity);
+        return new EventDTO(entity);
+    }
+
+    public void delete(Long id){
+        try{
+            repo.deleteById(id);
+        }
+        catch(EmptyResultDataAccessException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found");
+        }
+    }
+
+    public EventDTO update(Long id, EventUpdateDTO dto){
+        try {
+            Event entity = repo.getOne(id);
+            entity.setName(dto.getName());
+            entity.setEmailContact(dto.getEmailContact());
+            entity = repo.save(entity);
+            return new EventDTO(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found");
+        }
+    }
+
+    
+}
