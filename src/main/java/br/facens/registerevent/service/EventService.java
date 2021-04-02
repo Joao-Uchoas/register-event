@@ -51,7 +51,12 @@ public class EventService {
 
     public EventDTO insert(EventInsertDTO dto){
         Event entity = new Event(dto); 
-        entity = repo.save(entity);
+        if(entity.getStartDate().isAfter(entity.getEndDate()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A data inicial não pode ser maior que a data final.");
+        else if(entity.getStartTime().isAfter(entity.getEndTime()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O horario inicial não pode ser maior que o horario final.");
+        else
+            entity = repo.save(entity);
         return new EventDTO(entity);
     }
 
@@ -60,7 +65,7 @@ public class EventService {
             repo.deleteById(id);
         }
         catch(EmptyResultDataAccessException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event not found");
         }
     }
 
@@ -72,9 +77,8 @@ public class EventService {
             entity = repo.save(entity);
             return new EventDTO(entity);
         } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
     }
 
-    
 }
