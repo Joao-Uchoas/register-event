@@ -1,11 +1,16 @@
 package br.facens.registerevent.dto;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import br.facens.registerevent.entities.Event;
+import jdk.jfr.Timestamp;
 
 public class EventDTO {
     private Long id;
@@ -19,6 +24,10 @@ public class EventDTO {
     @Length(min = 3, max = 70, message = "A descrição deve ter no minino 3 caracteres e no maximo 70 caracteres.")
     private String description;
     
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
+    @Timestamp
+    private LocalTime startTime;
     @Email
     private String emailContact;
 
@@ -26,10 +35,12 @@ public class EventDTO {
    
     public EventDTO(){
     }
-    public EventDTO(Long id, String name, String description, String emailContact) {
+    public EventDTO(Long id, String name, String description,LocalDate startDate,LocalTime startTime, String emailContact) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.startDate = startDate;
+        this.startTime = startTime;
         this.emailContact = emailContact;
         
     }
@@ -37,6 +48,8 @@ public class EventDTO {
         this.id = reg.getId();
         this.name = reg.getName();
         this.description = reg.getDescription();
+        this.startDate = reg.getStartDate();
+        this.startTime = reg.getStartTime();
         this.emailContact = reg.getEmailContact();
     }
 
@@ -53,6 +66,12 @@ public class EventDTO {
     public String getEmailContact() {
         return emailContact;
     }
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+    public LocalTime getStartTime() {
+        return startTime;
+    }
 
     // Metodos Setters
     public void setId(Long id) {
@@ -66,6 +85,12 @@ public class EventDTO {
     }    
     public void setEmailContact(String emailContact) {
         this.emailContact = emailContact;
+    }
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }  
 
 

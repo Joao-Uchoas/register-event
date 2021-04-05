@@ -53,7 +53,7 @@ public class EventService {
         Event entity = new Event(dto); 
         if(entity.getStartDate().isAfter(entity.getEndDate()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data inicial não pode ser maior que a data final.");
-        else if(entity.getStartDate().isEqual(entity.getEndDate()) && entity.getStartDate().isAfter(entity.getEndDate()))
+        else if(entity.getStartDate().isEqual(entity.getEndDate()) && entity.getStartTime().isAfter(entity.getEndTime()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O horario inicial não pode ser maior que o horario final.");
         else
             entity = repo.save(entity);

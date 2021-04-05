@@ -42,9 +42,9 @@ public class EventController {
         @RequestParam(value = "orderBy",        defaultValue = "id") String orderBy,
         @RequestParam(value = "name",           defaultValue = "") String  name,
         @RequestParam(value = "place",          defaultValue = "") String  place,
-        @RequestParam(value = "startDate",          defaultValue = "01/01/0001") LocalDate startDate,// a data tem que colocar "dia/mes/ano" e não só um valor... 
-                                                                                                     //exemplo 01, ele não vai achar o dia 01 ou o mes 01,
-                                                                                                     //mas acharia 01/01/2022.
+        @RequestParam(value = "startDate",      defaultValue = "01/01/0001") LocalDate startDate,// a data tem que colocar "dia/mes/ano" e não só um valor... 
+                                                                                                 //exemplo: 01 não vai achar o dia 01 ou o mes 01,
+                                                                                                 //mas acharia 01/01/0001.
         @RequestParam(value = "description",    defaultValue = "") String  description
 
 

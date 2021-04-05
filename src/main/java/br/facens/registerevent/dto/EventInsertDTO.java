@@ -25,9 +25,9 @@ public class EventInsertDTO {
     @Length(min = 3, max = 100, message = "O local deve ter no minino 3 caracteres e no maximo 100 caracteres.")
     private String place;
 
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyy-MM-dd")
     private LocalDate startDate;
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyy-MM-dd")
     private LocalDate endDate;
 
     @Timestamp
