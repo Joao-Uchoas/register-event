@@ -13,13 +13,13 @@ import br.facens.registerevent.entities.Event;
 public interface EventRepository extends JpaRepository<Event,Long>{
     
     //Consulta JPQL!!!
-    @Query("SELECT r FROM Event r " + 
-            "WHERE"+ 
-            "(r.name LIKE CONCAT('%', :name, '%')) AND " +
-            "(r.place LIKE CONCAT('%', :place, '%')) AND"+
-            "(r.startDate LIKE CONCAT('%', :startDate, '%')) AND"+
-            "(r.description LIKE CONCAT('%', :description, '%'))"
-    )
+    @Query("SELECT r FROM Event r " +  
+           "WHERE " + 
+            "LOWER(r.name)          LIKE    LOWER(CONCAT('%', :name, '%'))          AND " +
+            "LOWER(r.place)         LIKE    LOWER(CONCAT('%', :place, '%'))         AND " +
+            "LOWER(r.description)   LIKE    LOWER(CONCAT('%', :description, '%'))   AND " +
+            "r.startDate >= :startDate"
+        )
     public Page<Event> find(Pageable pageRequest, String name, String place, LocalDate startDate,String description);
     
 }

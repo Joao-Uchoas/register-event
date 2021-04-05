@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,14 +42,13 @@ public class EventController {
         @RequestParam(value = "orderBy",        defaultValue = "id") String orderBy,
         @RequestParam(value = "name",           defaultValue = "") String  name,
         @RequestParam(value = "place",          defaultValue = "") String  place,
-        @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,// a data tem que colocar "ano/mes/dia" e não só um valor... 
-                                                            //exemplo 01, ele não vai achar o dia 01 ou o mes 01,
-                                                            //mas acharia 2022-01-01.
+        @RequestParam(value = "startDate",          defaultValue = "01/01/0001") LocalDate startDate,// a data tem que colocar "dia/mes/ano" e não só um valor... 
+                                                                                                     //exemplo 01, ele não vai achar o dia 01 ou o mes 01,
+                                                                                                     //mas acharia 01/01/2022.
         @RequestParam(value = "description",    defaultValue = "") String  description
 
 
     ){
-
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
 
         Page<EventDTO> list = service.getEvents(pageRequest, name, place, startDate, description);
