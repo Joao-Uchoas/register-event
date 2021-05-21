@@ -14,9 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.facens.registerevent.dto.EventDTO;
-import br.facens.registerevent.dto.EventInsertDTO;
-import br.facens.registerevent.dto.EventUpdateDTO;
+import br.facens.registerevent.dto.event.EventDTO;
+import br.facens.registerevent.dto.event.EventInsertDTO;
+import br.facens.registerevent.dto.event.EventUpdateDTO;
 import br.facens.registerevent.entities.Event;
 import br.facens.registerevent.repository.EventRepository;
 
@@ -26,8 +26,8 @@ public class EventService {
     @Autowired
     private EventRepository repo;
 
-    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String place, LocalDate startDate,String description){
-        Page<Event> list = repo.find(pageRequest, name, place, startDate, description);
+    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, LocalDate startDate,String description){
+        Page<Event> list = repo.find(pageRequest, name, startDate, description);
         return list.map( r -> new EventDTO(r));
     }
 
@@ -49,6 +49,7 @@ public class EventService {
         return new EventDTO(reg);
     }
 
+    
     public EventDTO insert(EventInsertDTO dto){
         Event entity = new Event(dto); 
         if(entity.getStartDate().isAfter(entity.getEndDate()))

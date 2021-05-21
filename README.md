@@ -1,5 +1,9 @@
-# register-event
+# Registro de Evento
+###Nome: João Vitor Uchôas Santos   RA: 190350
+###Nome: Edgar Rosotti Navarro      RA: 180669
 # Read Me First
+
+
 The following was discovered as part of building this project:
 
 * The original package name 'br.facens.register-event' is invalid and this project uses 'br.facens.registerevent' instead.

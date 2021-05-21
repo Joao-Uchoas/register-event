@@ -1,4 +1,4 @@
-package br.facens.registerevent.dto;
+package br.facens.registerevent.dto.event;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -37,7 +37,31 @@ public class EventInsertDTO {
 
     @Email
     private String emailContact;
+
+    private Long amountFreeTickets;
+    private Long amountPayedTickets;
+
+    private double priceTicket;
+
     
+    public Long getAmountFreeTickets() {
+        return amountFreeTickets;
+    }
+    public void setAmountFreeTickets(Long amountFreeTickets) {
+        this.amountFreeTickets = amountFreeTickets;
+    }
+    public Long getAmountPayedTickets() {
+        return amountPayedTickets;
+    }
+    public void setAmountPayedTickets(Long amountPayedTickets) {
+        this.amountPayedTickets = amountPayedTickets;
+    }
+    public double getPriceTicket() {
+        return priceTicket;
+    }
+    public void setPriceTicket(double priceTicket) {
+        this.priceTicket = priceTicket;
+    }    
     public String getName() {
         return name;
     }

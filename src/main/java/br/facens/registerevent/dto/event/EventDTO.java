@@ -1,4 +1,4 @@
-package br.facens.registerevent.dto;
+package br.facens.registerevent.dto.event;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -30,9 +30,7 @@ public class EventDTO {
     private LocalTime startTime;
     @Email
     private String emailContact;
-
-
-   
+    
     public EventDTO(){
     }
     public EventDTO(Long id, String name, String description,LocalDate startDate,LocalTime startTime, String emailContact) {

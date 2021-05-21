@@ -1,4 +1,4 @@
-package br.facens.registerevent.dto;
+package br.facens.registerevent.dto.event;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

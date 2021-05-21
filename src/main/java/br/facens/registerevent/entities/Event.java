@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import br.facens.registerevent.dto.EventInsertDTO;
+import br.facens.registerevent.dto.event.EventInsertDTO;
 import jdk.jfr.Timestamp;
 
 @Entity
@@ -35,10 +35,6 @@ public class Event implements Serializable{
     @Length(min = 3, max = 70, message = "A descrição deve ter no minino 3 caracteres e no maximo 70 caracteres.")
     private String description;
 
-    @NotBlank(message = "Preencher o local.")
-    @Length(min = 3, max = 100, message = "O local deve ter no minino 3 caracteres e no maximo 100 caracteres.")
-    private String place;
-
     @DateTimeFormat(pattern = "yyy-MM-dd")
     private LocalDate startDate;
     @DateTimeFormat(pattern = "yyy-MM-dd")
@@ -50,21 +46,27 @@ public class Event implements Serializable{
     private LocalTime endTime;
     @Email
     private String emailContact;
-    
 
+    private Long amountFreeTickets;
+    private Long amountPayedTickets;
+
+    private double priceTicket;
+
+    
     public Event() {
     }
     public Event(EventInsertDTO dto) {
         this.name = dto.getName();
         this.description = dto.getDescription();
-        this.place = dto.getPlace();
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();
         this.startTime = dto.getStartTime();
         this.endTime = dto.getEndTime();
         this.emailContact = dto.getEmailContact();
+        this.amountFreeTickets = dto.getAmountFreeTickets();
+        this.amountPayedTickets = dto.getAmountPayedTickets();
+        this.priceTicket = dto.getPriceTicket();
     }
-
     // Metodos Getters
     public static long getSerialversionuid() {
         return serialVersionUID;
@@ -77,9 +79,6 @@ public class Event implements Serializable{
     }
     public String getDescription() {
         return description;
-    }
-    public String getPlace() {
-        return place;
     }
     public LocalDate getStartDate() {
         return startDate;
@@ -96,6 +95,15 @@ public class Event implements Serializable{
     public String getEmailContact() {
         return emailContact;
     }
+    public Long getAmountFreeTickets() {
+        return amountFreeTickets;
+    }
+    public Long getAmountPayedTickets() {
+        return amountPayedTickets;
+    }
+    public double getPriceTicket() {
+        return priceTicket;
+    }
 
 
 // Metodos Setters
@@ -108,9 +116,7 @@ public class Event implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setPlace(String place) {
-        this.place = place;
-    }
+
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
@@ -126,6 +132,17 @@ public class Event implements Serializable{
     public void setEmailContact(String emailContact) {
         this.emailContact = emailContact;
     }
+    public void setAmountFreeTickets(Long amountFreeTickets) {
+        this.amountFreeTickets = amountFreeTickets;
+    }
+    public void setAmountPayedTickets(Long amountPayedTickets) {
+        this.amountPayedTickets = amountPayedTickets;
+    }
+    public void setPriceTicket(double priceTicket) {
+        this.priceTicket = priceTicket;
+    }
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
