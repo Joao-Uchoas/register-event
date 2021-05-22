@@ -38,7 +38,9 @@ public class EventInsertDTO {
     @Email
     private String emailContact;
 
+    
     private Long amountFreeTickets;
+    
     private Long amountPayedTickets;
 
     private double priceTicket;

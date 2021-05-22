@@ -1,10 +1,14 @@
 package br.facens.registerevent.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 import br.facens.registerevent.dto.attend.AttendInsertDTO;
 
 @Entity
+@Table(name = "TB_ATTENDEE")
+@PrimaryKeyJoinColumn(name = "BASEUSER_ID")
 public class Attend extends BaseUser {
     
     private Double balance;

@@ -1,11 +1,20 @@
 package br.facens.registerevent.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+import br.facens.registerevent.dto.place.PlaceInsertDTO;
+
+@Entity
+@Table(name = "TB_PLACE")
 public class Place implements Serializable{
 
     private static final long serialVersionUID = 1L;
@@ -15,11 +24,18 @@ public class Place implements Serializable{
     private Long id;
     private String name;
     private String address;
+
+    @OneToMany
+    private List<Event> events = new ArrayList<>(); 
+    
     
     public Place() {
 
     }
-
+    public Place(PlaceInsertDTO dto){
+        this.name = dto.getName();
+        this.address = dto.getAddress();
+    }
 
     public static long getSerialversionuid() {
         return serialVersionUID;
@@ -41,6 +57,12 @@ public class Place implements Serializable{
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+    public List<Event> getEvents() {
+        return events;
+    }
+    public void addEvent(Event event) {
+        this.events.add(event);
     }
 
     @Override

@@ -30,17 +30,19 @@ public class EventDTO {
     private LocalTime startTime;
     @Email
     private String emailContact;
+
+    private Double priceTicket;
     
     public EventDTO(){
     }
-    public EventDTO(Long id, String name, String description,LocalDate startDate,LocalTime startTime, String emailContact) {
+    public EventDTO(Long id, String name, String description,LocalDate startDate,LocalTime startTime, String emailContact, double priceTicket) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.startTime = startTime;
         this.emailContact = emailContact;
-        
+        this.priceTicket = priceTicket;
     }
     public EventDTO(Event reg) {
         this.id = reg.getId();
@@ -49,6 +51,7 @@ public class EventDTO {
         this.startDate = reg.getStartDate();
         this.startTime = reg.getStartTime();
         this.emailContact = reg.getEmailContact();
+        this.priceTicket = reg.getPriceTicket();
     }
 
     // Metodos Getters
@@ -70,6 +73,9 @@ public class EventDTO {
     public LocalTime getStartTime() {
         return startTime;
     }
+    public double getPriceTicket() {
+        return priceTicket;
+    }
 
     // Metodos Setters
     public void setId(Long id) {
@@ -90,6 +96,9 @@ public class EventDTO {
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }  
+    public void setPriceTicket(double priceTicket) {
+        this.priceTicket = priceTicket;
+    }
 
 
 

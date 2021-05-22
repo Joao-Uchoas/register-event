@@ -26,8 +26,8 @@ public class EventService {
     @Autowired
     private EventRepository repo;
 
-    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, LocalDate startDate,String description){
-        Page<Event> list = repo.find(pageRequest, name, startDate, description);
+    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, LocalDate startDate,String description, Double priceTicket){
+        Page<Event> list = repo.find(pageRequest, name, startDate, description, priceTicket);
         return list.map( r -> new EventDTO(r));
     }
 
@@ -56,6 +56,10 @@ public class EventService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data inicial não pode ser maior que a data final.");
         else if(entity.getStartDate().isEqual(entity.getEndDate()) && entity.getStartTime().isAfter(entity.getEndTime()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O horario inicial não pode ser maior que o horario final.");
+        else if(entity.getAmountPayedTickets() > 0 && entity.getPriceTicket() <= 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O valor do ingresso informado tem que ser maior que zero.");
+        else if(entity.getAmountPayedTickets() == 0 && entity.getPriceTicket() > 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O valor do ingresso informado tem que ser zero.");
         else
             entity = repo.save(entity);
         return new EventDTO(entity);

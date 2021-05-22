@@ -9,10 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -47,12 +48,21 @@ public class Event implements Serializable{
     @Email
     private String emailContact;
 
+    
     private Long amountFreeTickets;
     private Long amountPayedTickets;
 
-    private double priceTicket;
+    private Double priceTicket;
 
+    @ManyToOne
+    private Place place;
     
+    @ManyToOne
+    @JoinColumn(name = "ADMIN_BASEUSER_ID")
+    private Admin admin;
+    
+    
+// Metodos Constructs
     public Event() {
     }
     public Event(EventInsertDTO dto) {
@@ -67,6 +77,7 @@ public class Event implements Serializable{
         this.amountPayedTickets = dto.getAmountPayedTickets();
         this.priceTicket = dto.getPriceTicket();
     }
+
     // Metodos Getters
     public static long getSerialversionuid() {
         return serialVersionUID;
@@ -104,7 +115,13 @@ public class Event implements Serializable{
     public double getPriceTicket() {
         return priceTicket;
     }
-
+    public Place getPlace() {
+        return place;
+    }
+    public Admin getAdmin() {
+        return admin;
+    }
+    
 
 // Metodos Setters
     public void setId(Long id) {
@@ -141,8 +158,14 @@ public class Event implements Serializable{
     public void setPriceTicket(double priceTicket) {
         this.priceTicket = priceTicket;
     }
+    public void setPlace(Place place) {
+        this.place = place;
+    }
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
 
-
+// Metodo hash e equals
     @Override
     public int hashCode() {
         final int prime = 31;
