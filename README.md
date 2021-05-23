@@ -1,31 +1,47 @@
 # Registro de Evento
-###Nome: João Vitor Uchôas Santos   RA: 190350
+### Nome: João Vitor Uchôas Santos   RA: 190350
 
-###Nome: Edgar Rosotti Navarro      RA: 180669
-# Read Me First
+### Nome: Edgar Rosotti Navarro      RA: 180669
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+//attend
+
+{  
+    "name": "Maria Antonio",
+    "email": "maria@gmail.com",
+    "balance": 100.12 
+}
+
+//admin
+
+{  
+    "name": "Uchoas",
+    "email": "uchoas@gmail.com",
+    "phoneNumber": "19 97521-2135" 
+}
+
+//place
+
+{
+    "name": "Shark",
+    "address": "Rua AB, 572"
+}
+
+//event
+{
+    "name": "Show do Tião",
+    "description": "Rua AB, 572",
+    "startDate": "2022-02-02",
+    "endDate": "2022-02-03",
+    "startTime": "19:30:00",
+    "endTime": "05:00:00",
+    "emailContact": "tião@gmail.com",
+    "amountFreeTickets":100,
+    "amountPayedTickets":2000,
+    "priceTicket": 50
+
+}
 
 
-The following was discovered as part of building this project:
-
-* The original package name 'br.facens.register-event' is invalid and this project uses 'br.facens.registerevent' instead.
-
-# Getting Started
-
-### Reference Documentation
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.4.3/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.4.3/maven-plugin/reference/html/#build-image)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.4.3/reference/htmlsingle/#boot-features-jpa-and-spring-data)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.4.3/reference/htmlsingle/#boot-features-developing-web-applications)
-* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.4.3/reference/htmlsingle/#using-boot-devtools)
-
-### Guides
-The following guides illustrate how to use some features concretely:
-
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
 
