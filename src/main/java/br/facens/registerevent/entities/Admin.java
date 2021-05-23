@@ -24,9 +24,10 @@ public class Admin extends BaseUser{
     public Admin() {
     }
 
-    public Admin(Long id, String name, String email, String phoneNumber) {
+    public Admin(Long id, String name, String email, String phoneNumber, List<Event> events) {
         super(id, name, email);
         this.phoneNumber = phoneNumber;
+        this.events = events;
     }
     public Admin(AdminInsertDTO dto) {
         super.setName(dto.getName());

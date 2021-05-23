@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -18,7 +22,10 @@ public class BaseUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Preencher o nome.")
+    @Length(min = 3, max = 50, message = "O nome deve ter no minino 3 caracteres e no maximo 50 caracteres.")
     private String name;
+    @Email
     private String email;
 
     public BaseUser() {

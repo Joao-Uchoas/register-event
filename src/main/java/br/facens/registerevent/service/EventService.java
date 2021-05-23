@@ -58,8 +58,8 @@ public class EventService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O horario inicial não pode ser maior que o horario final.");
         else if(entity.getAmountPayedTickets() > 0 && entity.getPriceTicket() <= 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O valor do ingresso informado tem que ser maior que zero.");
-        else if(entity.getAmountPayedTickets() == 0 && entity.getPriceTicket() > 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O valor do ingresso informado tem que ser zero.");
+        else if(entity.getAmountPayedTickets() <= 0 && entity.getPriceTicket() > 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O valor do ingresso informado tem que ser zero e não pode ser negativo.");
         else if(entity.getAmountPayedTickets() <= 0 && entity.getAmountFreeTickets() <= 0)//Ver se esta funcionando ... testar depois.
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tem que ter no minino 1 ingresso para ter um evento e não pode ter valor negativo!");
         else
