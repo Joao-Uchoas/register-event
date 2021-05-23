@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.Length;
 
 import br.facens.registerevent.dto.place.PlaceInsertDTO;
 
@@ -22,7 +25,11 @@ public class Place implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Preencher o nome do local.")
+    @Length(min = 3, max = 50, message = "O colocar no minimo 3 caracteres e no maximo 50.")
     private String name;
+    @NotBlank(message = "Preencher o endereço do local.")
+    @Length(min = 3, max = 50, message = "O colocar no minimo 3 caracteres e no maximo 50.")
     private String address;
 
     @OneToMany

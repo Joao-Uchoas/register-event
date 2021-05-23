@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.Length;
 
 import br.facens.registerevent.dto.admin.AdminInsertDTO;
 
@@ -15,6 +18,8 @@ import br.facens.registerevent.dto.admin.AdminInsertDTO;
 @PrimaryKeyJoinColumn(name = "BASEUSER_ID")
 public class Admin extends BaseUser{
     
+    @NotBlank(message = "Preencher o telefone.")
+    @Length(min = 11, max = 13, message = "O colocar os 11 digitos do telefone, ex: xx xxxxxxxxx")
     private String phoneNumber;
 
     @OneToMany(mappedBy = "admin")

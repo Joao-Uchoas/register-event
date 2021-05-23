@@ -6,7 +6,9 @@ import br.facens.registerevent.entities.Admin;
 public class AdminDTO {
     
     private Long id;
+    
     private String name;
+
     private String email;
     
     

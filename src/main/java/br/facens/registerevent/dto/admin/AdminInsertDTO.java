@@ -1,8 +1,13 @@
 package br.facens.registerevent.dto.admin;
 
+
 public class AdminInsertDTO {
+
     private String name;
+  
     private String email;
+    
+    
     private String phoneNumber;
 
     public String getPhoneNumber() {

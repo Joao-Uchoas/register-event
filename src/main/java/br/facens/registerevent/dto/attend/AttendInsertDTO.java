@@ -1,8 +1,9 @@
 package br.facens.registerevent.dto.attend;
 
-
 public class AttendInsertDTO{
+
     private String name;
+
     private String email;
     private Double balance;
 

@@ -2,6 +2,8 @@ package br.facens.registerevent.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +53,7 @@ public class PlaceController {
     }
 
     @PostMapping
-    public ResponseEntity<PlaceDTO> insert(@RequestBody PlaceInsertDTO insertDto){
+    public ResponseEntity<PlaceDTO> insert(@Valid @RequestBody PlaceInsertDTO insertDto){
         PlaceDTO dto = service.insert(insertDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
@@ -64,7 +66,7 @@ public class PlaceController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<PlaceDTO> update(@PathVariable Long id,@RequestBody PlaceUpdateDTO updateDto){
+    public ResponseEntity<PlaceDTO> update(@PathVariable Long id,@Valid @RequestBody PlaceUpdateDTO updateDto){
         PlaceDTO dto = service.update(id, updateDto);
         return ResponseEntity.ok().body(dto);
     }

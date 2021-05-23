@@ -2,6 +2,8 @@ package br.facens.registerevent.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,7 +52,7 @@ public class AttendController {
     }
 
     @PostMapping
-    public ResponseEntity<AttendDTO> insert(@RequestBody AttendInsertDTO insertDto){
+    public ResponseEntity<AttendDTO> insert(@Valid @RequestBody AttendInsertDTO insertDto){
         AttendDTO dto = service.insert(insertDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
@@ -63,7 +65,7 @@ public class AttendController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<AttendDTO> update(@PathVariable Long id,@RequestBody AttendUpdateDTO updateDto){
+    public ResponseEntity<AttendDTO> update(@PathVariable Long id,@Valid @RequestBody AttendUpdateDTO updateDto){
         AttendDTO dto = service.update(id, updateDto);
         return ResponseEntity.ok().body(dto);
     }

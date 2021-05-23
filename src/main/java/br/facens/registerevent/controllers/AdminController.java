@@ -2,6 +2,8 @@ package br.facens.registerevent.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +55,7 @@ public class AdminController {
     }
 
     @PostMapping
-    public ResponseEntity<AdminDTO> insert(@RequestBody AdminInsertDTO insertDto){
+    public ResponseEntity<AdminDTO> insert(@Valid @RequestBody AdminInsertDTO insertDto){
         AdminDTO dto = service.insert(insertDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
@@ -66,7 +68,7 @@ public class AdminController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<AdminDTO> update(@PathVariable Long id,@RequestBody AdminUpdateDTO updateDto){
+    public ResponseEntity<AdminDTO> update(@PathVariable Long id,@Valid @RequestBody AdminUpdateDTO updateDto){
         AdminDTO dto = service.update(id, updateDto);
         return ResponseEntity.ok().body(dto);
     }
