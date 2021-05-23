@@ -23,8 +23,8 @@ public class AttendService {
     @Autowired
     private AttendRepository repo;
 
-    public Page<AttendDTO> getAttendees(PageRequest pageRequest){
-        Page<Attend> list = repo.find(pageRequest);
+    public Page<AttendDTO> getAttendees(PageRequest pageRequest, String name, String email){
+        Page<Attend> list = repo.find(pageRequest, name, email);
         return list.map( a -> new AttendDTO(a));
     }
 

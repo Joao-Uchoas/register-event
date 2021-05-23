@@ -9,7 +9,11 @@ import br.facens.registerevent.entities.Attend;
 @Repository
 public interface AttendRepository extends JpaRepository<Attend,Long> {
 
-    @Query("SELECT a FROM Attend a")
-    public Page<Attend> find(Pageable pageRequest);
+    @Query("SELECT a FROM Attend a "+  
+    "WHERE " + 
+     "LOWER(a.name)          LIKE    LOWER(CONCAT('%', :name, '%'))          AND " +
+     "LOWER(a.email)          LIKE    LOWER(CONCAT('%', :email, '%'))"
+    )
+    public Page<Attend> find(Pageable pageRequest, String name, String email);
     
 }

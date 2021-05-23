@@ -26,8 +26,8 @@ public class EventService {
     @Autowired
     private EventRepository repo;
 
-    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, LocalDate startDate,String description, Double priceTicket){
-        Page<Event> list = repo.find(pageRequest, name, startDate, description, priceTicket);
+    public Page<EventDTO> getEvents(PageRequest pageRequest, String name,String emailContact, LocalDate startDate,String description, Double priceTicket){
+        Page<Event> list = repo.find(pageRequest, name, emailContact, startDate, description, priceTicket);
         return list.map( r -> new EventDTO(r));
     }
 
@@ -60,6 +60,8 @@ public class EventService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O valor do ingresso informado tem que ser maior que zero.");
         else if(entity.getAmountPayedTickets() == 0 && entity.getPriceTicket() > 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O valor do ingresso informado tem que ser zero.");
+        else if(entity.getAmountPayedTickets() <= 0 && entity.getAmountFreeTickets() <= 0)//Ver se esta funcionando ... testar depois.
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tem que ter no minino 1 ingresso para ter um evento e não pode ter valor negativo!");
         else
             entity = repo.save(entity);
         return new EventDTO(entity);

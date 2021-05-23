@@ -11,6 +11,9 @@ import br.facens.registerevent.entities.Place;
 @Repository
 public interface PlaceRepository extends JpaRepository<Place,Long> {
     
-    @Query("SELECT a FROM Place a")
-    public Page<Place> find(Pageable pageRequest);
+    @Query("SELECT a FROM Place a "+
+    "WHERE " + 
+    "LOWER(a.address)          LIKE    LOWER(CONCAT('%', :address, '%'))" 
+    )
+    public Page<Place> find(Pageable pageRequest, String address);
 }

@@ -10,6 +10,10 @@ import br.facens.registerevent.entities.Admin;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin,Long> {
     
-    @Query("SELECT a FROM Admin a")
-    public Page<Admin> find(Pageable pageRequest);
+    @Query("SELECT a FROM Admin a "+  
+    "WHERE " + 
+     "LOWER(a.name)          LIKE    LOWER(CONCAT('%', :name, '%'))          AND " +
+     "LOWER(a.email)          LIKE    LOWER(CONCAT('%', :email, '%'))"
+    )
+    public Page<Admin> find(Pageable pageRequest, String name, String email);
 }

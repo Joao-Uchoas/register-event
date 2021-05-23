@@ -42,6 +42,7 @@ public class EventController {
         @RequestParam(value = "direction",      defaultValue = "ASC") String direction,
         @RequestParam(value = "orderBy",        defaultValue = "id") String orderBy,
         @RequestParam(value = "name",           defaultValue = "") String  name,
+        @RequestParam(value = "emailContact",           defaultValue = "") String  emailContact,
         @RequestParam(value = "startDate",      defaultValue = "01/01/1900") LocalDate startDate,// a data tem que colocar "dia/mes/ano" e não só um valor... 
                                                                                                  //exemplo: 01 não vai achar o dia 01 ou o mes 01,
                                                                                                  //mas acharia 01/01/0001.
@@ -51,7 +52,7 @@ public class EventController {
     ){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
 
-        Page<EventDTO> list = service.getEvents(pageRequest, name, startDate, description, priceTicket);
+        Page<EventDTO> list = service.getEvents(pageRequest, name, emailContact, startDate, description, priceTicket);
         return ResponseEntity.ok(list);
     }
 

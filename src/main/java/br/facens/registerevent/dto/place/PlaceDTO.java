@@ -5,13 +5,13 @@ import br.facens.registerevent.entities.Place;
 
 public class PlaceDTO {
     private Long id;
-    private String name;
+    private String address;
 
     public PlaceDTO() {
     }
     public PlaceDTO(Place reg) {
         this.id = reg.getId();
-        this.name = reg.getName();
+        this.address = reg.getAddress();
     }
 
     public Long getId() {
@@ -20,10 +20,10 @@ public class PlaceDTO {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
+    public String getAddress() {
+        return address;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
