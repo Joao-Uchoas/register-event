@@ -21,10 +21,6 @@ public class EventInsertDTO {
     @Length(min = 3, max = 70, message = "A descrição deve ter no minino 3 caracteres e no maximo 70 caracteres.")
     private String description;
 
-    @NotBlank(message = "Preencher o local.")
-    @Length(min = 3, max = 100, message = "O local deve ter no minino 3 caracteres e no maximo 100 caracteres.")
-    private String place;
-
     @DateTimeFormat(pattern = "yyy-MM-dd")
     private LocalDate startDate;
     @DateTimeFormat(pattern = "yyy-MM-dd")
@@ -75,12 +71,6 @@ public class EventInsertDTO {
     }
     public void setDescription(String description) {
         this.description = description;
-    }
-    public String getPlace() {
-        return place;
-    }
-    public void setPlace(String place) {
-        this.place = place;
     }
     public LocalDate getStartDate() {
         return startDate;
