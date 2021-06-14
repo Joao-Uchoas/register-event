@@ -24,6 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.facens.registerevent.dto.event.EventDTO;
 import br.facens.registerevent.dto.event.EventInsertDTO;
 import br.facens.registerevent.dto.event.EventUpdateDTO;
+import br.facens.registerevent.entities.Event;
 import br.facens.registerevent.service.EventService;
 
 @RestController
@@ -79,6 +80,14 @@ public class EventController {
     public ResponseEntity<EventDTO> update(@PathVariable Long id,@Valid @RequestBody EventUpdateDTO updateDto){
         EventDTO dto = service.update(id, updateDto);
         return ResponseEntity.ok().body(dto);
+    }
+
+
+
+    @PostMapping("{idEvent}/places/{idPlace}")
+    public ResponseEntity<Event> insertEventsPlace(@PathVariable Long idEvent, @PathVariable Long idPlace ){
+        Event events = service.insertEventsPlace(idEvent,idPlace);
+        return ResponseEntity.ok(events);
     }
    
     

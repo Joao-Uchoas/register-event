@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -32,7 +37,13 @@ public class Place implements Serializable{
     @Length(min = 3, max = 50, message = "O colocar no minimo 3 caracteres e no maximo 50.")
     private String address;
 
-    @OneToMany
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+        name = "TB_EVENT_PLACE",
+        joinColumns = @JoinColumn(name = "place_id"),
+        inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
     private List<Event> events = new ArrayList<>(); 
     
     
@@ -42,6 +53,11 @@ public class Place implements Serializable{
     public Place(PlaceInsertDTO dto){
         this.name = dto.getName();
         this.address = dto.getAddress();
+    }
+    public Place(Place reg){
+        this.id = reg.getId();
+        this.name = reg.getName();
+        this.address = reg.getAddress();
     }
 
     public static long getSerialversionuid() {

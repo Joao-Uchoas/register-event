@@ -35,6 +35,12 @@ public class PlaceService {
         return new PlaceDTO(reg);
     }
 
+    public Place getPlaceEventById(Long id){
+        Optional<Place> op = repo.findById(id);
+        Place reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not foud"));
+        return new Place(reg);
+    }
+
     public PlaceDTO insert(PlaceInsertDTO dto){
         Place entity = new Place(dto); 
         entity = repo.save(entity);
@@ -53,7 +59,7 @@ public class PlaceService {
     public PlaceDTO update(Long id, PlaceUpdateDTO dto){
         try {
             Place entity = repo.getOne(id);
-            entity.setName(dto.getName());;
+            entity.setName(dto.getName());
             entity = repo.save(entity);
             return new PlaceDTO(entity);
         } catch (EntityNotFoundException e) {

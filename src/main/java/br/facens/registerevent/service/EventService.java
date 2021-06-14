@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,6 +19,7 @@ import br.facens.registerevent.dto.event.EventDTO;
 import br.facens.registerevent.dto.event.EventInsertDTO;
 import br.facens.registerevent.dto.event.EventUpdateDTO;
 import br.facens.registerevent.entities.Event;
+import br.facens.registerevent.entities.Place;
 import br.facens.registerevent.repository.EventRepository;
 
 @Service
@@ -25,6 +27,9 @@ public class EventService {
     
     @Autowired
     private EventRepository repo;
+    
+    @Autowired
+    private PlaceService servicePlace;
 
     public Page<EventDTO> getEvents(PageRequest pageRequest, String name,String emailContact, LocalDate startDate,String description, Double priceTicket){
         Page<Event> list = repo.find(pageRequest, name, emailContact, startDate, description, priceTicket);
@@ -49,6 +54,12 @@ public class EventService {
         return new EventDTO(reg);
     }
 
+    public Event getEventPlaceById(Long id){
+        Optional<Event> op = repo.findById(id);
+        Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not foud"));
+        return new Event(reg);
+    }
+
     
     public EventDTO insert(EventInsertDTO dto){
         Event entity = new Event(dto); 
@@ -66,6 +77,8 @@ public class EventService {
             entity = repo.save(entity);
         return new EventDTO(entity);
     }
+
+
 
     public void delete(Long id){
         try{
@@ -86,6 +99,14 @@ public class EventService {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
+    }
+
+    @Transactional
+    public Event insertEventsPlace(Long idEvent, Long idPlace) {
+        Event events = getEventPlaceById(idEvent);
+        Place places = servicePlace.getPlaceEventById(idPlace);
+        events.addPlace(places);
+        return events;
     }
 
 }

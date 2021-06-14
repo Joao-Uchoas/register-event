@@ -4,12 +4,17 @@ package br.facens.registerevent.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -54,8 +59,13 @@ public class Event implements Serializable{
 
     private Double priceTicket;
 
-    @ManyToOne
-    private Place place;
+    @ManyToMany
+    @JoinTable(
+        name = "TB_EVENT_PLACE",
+        joinColumns = @JoinColumn(name = "event_id"),
+        inverseJoinColumns = @JoinColumn(name = "place_id")
+    )
+    private List<Place> place = new ArrayList<>();
     
     @ManyToOne
     @JoinColumn(name = "ADMIN_BASEUSER_ID")
@@ -76,6 +86,16 @@ public class Event implements Serializable{
         this.amountFreeTickets = dto.getAmountFreeTickets();
         this.amountPayedTickets = dto.getAmountPayedTickets();
         this.priceTicket = dto.getPriceTicket();
+    }
+    public Event(Event reg) {
+        this.id = reg.getId();
+        this.name = reg.getName();
+        this.description = reg.getDescription();
+        this.startDate = reg.getStartDate();
+        this.startTime = reg.getStartTime();
+        this.emailContact = reg.getEmailContact();
+        this.priceTicket = reg.getPriceTicket();
+        this.place = reg.getPlace();
     }
 
     // Metodos Getters
@@ -115,7 +135,7 @@ public class Event implements Serializable{
     public double getPriceTicket() {
         return priceTicket;
     }
-    public Place getPlace() {
+    public List<Place> getPlace() {
         return place;
     }
     public Admin getAdmin() {
@@ -158,8 +178,9 @@ public class Event implements Serializable{
     public void setPriceTicket(double priceTicket) {
         this.priceTicket = priceTicket;
     }
-    public void setPlace(Place place) {
-        this.place = place;
+    public void addPlace(Place place) {
+        this.place.add(place);
+
     }
     public void setAdmin(Admin admin) {
         this.admin = admin;

@@ -54,3 +54,9 @@ VALUES ('Radiator Springs','Arizona, Rota 66');
 
 INSERT INTO tb_place (name,address) 
 VALUES ('Marcia','Jardim das Aves, Rua das Caldeiras nº 12');
+
+
+
+
+INSERT INTO TB_EVENT_PLACE(place_id,event_id) 
+VALUES (1,2);

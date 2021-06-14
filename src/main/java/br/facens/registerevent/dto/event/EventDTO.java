@@ -2,6 +2,7 @@ package br.facens.registerevent.dto.event;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import br.facens.registerevent.entities.Event;
+import br.facens.registerevent.entities.Place;
 import jdk.jfr.Timestamp;
 
 public class EventDTO {
@@ -32,6 +34,9 @@ public class EventDTO {
     private String emailContact;
 
     private Double priceTicket;
+
+
+    private List<Place> places;
     
     public EventDTO(){
     }
@@ -52,8 +57,18 @@ public class EventDTO {
         this.startTime = reg.getStartTime();
         this.emailContact = reg.getEmailContact();
         this.priceTicket = reg.getPriceTicket();
+        this.places = reg.getPlace();
     }
 
+    public void setPriceTicket(Double priceTicket) {
+        this.priceTicket = priceTicket;
+    }
+    public List<Place> getPlaces() {
+        return places;
+    }
+    public void setPlaces(List<Place> places) {
+        this.places = places;
+    }
     // Metodos Getters
     public Long getId() {
         return id;
