@@ -43,5 +43,9 @@
 
 }
 
+# Problema
+Não conseguimos fazer o POST do /events/{id}/tickets, tentamos de todas as formas mas são conseguimos lincar o evento com o ticket para fazer o POST ... sabemos que faltou um detalhe que devemos estar deixando passar e não sabemos oque é!!! é uma pena.
+
+
 
 
