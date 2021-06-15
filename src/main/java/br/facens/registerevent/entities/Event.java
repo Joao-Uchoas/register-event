@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -70,6 +71,10 @@ public class Event implements Serializable{
     @JoinColumn(name = "ADMIN_BASEUSER_ID")
     private Admin admin;
     
+    @OneToMany
+    @JoinColumn(name = "TICKET_ID")
+    private List<Ticket> tickets;
+    
     
 // Metodos Constructs
     public Event() {
@@ -95,7 +100,11 @@ public class Event implements Serializable{
         this.emailContact = reg.getEmailContact();
         this.priceTicket = reg.getPriceTicket();
         this.place = reg.getPlace();
+        this.tickets = reg.getTickets();
     }
+
+    
+
 
     // Metodos Getters
     public static long getSerialversionuid() {
@@ -140,6 +149,9 @@ public class Event implements Serializable{
     public Admin getAdmin() {
         return admin;
     }
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
     
 
 // Metodos Setters
@@ -179,13 +191,16 @@ public class Event implements Serializable{
     }
     public void addPlace(Place place) {
         this.place.add(place);
-
     }
     public void setAdmin(Admin admin) {
         this.admin = admin;
+    } 
+    public void addTickets(Ticket ticket) {
+        this.tickets.add(ticket);
     }
 
-// Metodo hash e equals
+
+    // Metodo hash e equals
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -211,6 +226,9 @@ public class Event implements Serializable{
     }
     public void removePlace(Place place2) {
         this.place.remove(place2);
+    }
+    public void removeTicket() {
+        this.tickets.removeAll(tickets);
     }
     
     

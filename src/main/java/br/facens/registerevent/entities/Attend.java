@@ -1,8 +1,14 @@
 package br.facens.registerevent.entities;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.facens.registerevent.dto.attend.AttendInsertDTO;
 
@@ -12,6 +18,11 @@ import br.facens.registerevent.dto.attend.AttendInsertDTO;
 public class Attend extends BaseUser {
     
     private Double balance;
+
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "TICKET_ID")
+    private List<Ticket> tickets;
 
     public Attend() {
     }
@@ -33,6 +44,14 @@ public class Attend extends BaseUser {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void addTickets(Ticket ticket) {
+        this.tickets.add(ticket);
     }
     
 }

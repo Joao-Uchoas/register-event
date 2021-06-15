@@ -60,3 +60,10 @@ VALUES ('Marcia','Jardim das Aves, Rua das Caldeiras nº 12');
 
 INSERT INTO TB_EVENT_PLACE(place_id,event_id) 
 VALUES (1,2);
+INSERT INTO TB_EVENT_PLACE(place_id,event_id) 
+VALUES (2,2);
+INSERT INTO TB_EVENT_PLACE(place_id,event_id) 
+VALUES (2,3);
+
+-- INSERT INTO TB_TICKET(date, price, type, ATTEND_BASEUSER_ID, EVENT_ID, TICKET_ID) 
+-- VALUES ("2022-01-01 12:00:00",200.0,Free, 1, 2, 0);

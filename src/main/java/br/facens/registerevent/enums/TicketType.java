@@ -2,9 +2,8 @@ package br.facens.registerevent.enums;
 
 
 public enum TicketType {
-    HOME("Home"),
-    MOBILE("Mobile"),
-    COMMERCIAL("Commercial");
+    FREE("Free"),
+    PAYED("Payed");
 
     private TicketType(String description) {
         this.description = description;

@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.facens.registerevent.dto.event.EventDTO;
 import br.facens.registerevent.dto.event.EventInsertDTO;
+import br.facens.registerevent.dto.event.EventTicketDTO;
 import br.facens.registerevent.dto.event.EventUpdateDTO;
 import br.facens.registerevent.entities.Event;
 import br.facens.registerevent.service.EventService;
@@ -98,6 +99,27 @@ public class EventController {
     }
 
 
+    @GetMapping("{id}/tickets")
+    public ResponseEntity<EventTicketDTO> getEventTicketById(@PathVariable Long id){
+        EventTicketDTO dto = service.getEventTicketById(id);
+        return ResponseEntity.ok(dto);
+    }
+
+
+
+    @PostMapping("{id}/tickets")
+    public ResponseEntity<EventTicketDTO> insertEventsTicket(@RequestBody Event idEvent){
+        EventTicketDTO events = service.insertEventsPlace(idEvent);
+        return ResponseEntity.ok(events);
+    }
+
+
+
+    @DeleteMapping("{id}/tickets")
+    public ResponseEntity<EventTicketDTO> deleteEventsPlace(@PathVariable Long idEvent){
+        service.deleteTicket(idEvent);
+        return ResponseEntity.noContent().build();
+    }
     
    
     

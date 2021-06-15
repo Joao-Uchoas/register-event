@@ -17,9 +17,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.facens.registerevent.dto.event.EventDTO;
 import br.facens.registerevent.dto.event.EventInsertDTO;
+import br.facens.registerevent.dto.event.EventTicketDTO;
 import br.facens.registerevent.dto.event.EventUpdateDTO;
 import br.facens.registerevent.entities.Event;
 import br.facens.registerevent.entities.Place;
+import br.facens.registerevent.entities.Ticket;
+import br.facens.registerevent.enums.TicketType;
 import br.facens.registerevent.repository.EventRepository;
 import br.facens.registerevent.repository.PlaceRepository;
 
@@ -63,6 +66,13 @@ public class EventService {
         Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not foud"));
         return new Event(reg);
     }
+
+    public EventTicketDTO getTicketById(Long id){
+        Optional<Event> op = repo.findById(id);
+        Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not foud"));
+        return new EventTicketDTO(reg);
+    }
+    
 
     
     public EventDTO insert(EventInsertDTO dto){
@@ -110,6 +120,7 @@ public class EventService {
         Event events = getEventPlaceById(idEvent);
         Place places = servicePlace.getPlaceEventById(idPlace);
         events.addPlace(places);
+        
         return events;
     }
  
@@ -127,6 +138,42 @@ public class EventService {
         catch(EmptyResultDataAccessException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event not found");
         }
+    }
+
+
+    public EventTicketDTO getEventTicketById(Long id) {
+        Optional<Event> op = repo.findById(id);
+        Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not foud"));
+        Long free = 0l;
+        Long payed = 0l;
+        for(Ticket t : reg.getTickets()){
+            if(t.getType().equals(TicketType.FREE)){
+                free++;
+            }else   
+                payed++;
+        }
+        return new EventTicketDTO(reg,free,payed);
+    }
+
+    //precisa ter o POST se não não tem sentido, mas esta criado.
+    public void deleteTicket(Long idEvent) {
+        try{
+            Event event = getEventPlaceById(idEvent);
+            event.removeTicket();
+            repo.save(event);            
+        }
+        catch(EmptyResultDataAccessException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event not found");
+        }
+    }
+
+    //talvez n estja funcionando
+    public EventTicketDTO insertEventsPlace(Event idEvent) {
+        EventTicketDTO entity = new EventTicketDTO(idEvent); 
+ 
+   
+     
+        return entity;
     }
 
 }

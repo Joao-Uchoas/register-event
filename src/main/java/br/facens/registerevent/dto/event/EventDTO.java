@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import br.facens.registerevent.entities.Event;
 import br.facens.registerevent.entities.Place;
+import br.facens.registerevent.entities.Ticket;
 import jdk.jfr.Timestamp;
 
 public class EventDTO {
@@ -37,6 +38,8 @@ public class EventDTO {
 
 
     private List<Place> places;
+
+    private List<Ticket> tickets;
     
     public EventDTO(){
     }
@@ -60,14 +63,18 @@ public class EventDTO {
         this.places = reg.getPlace();
     }
 
-    public void setPriceTicket(Double priceTicket) {
-        this.priceTicket = priceTicket;
-    }
     public List<Place> getPlaces() {
         return places;
     }
     public void setPlaces(List<Place> places) {
         this.places = places;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
     // Metodos Getters
     public Long getId() {

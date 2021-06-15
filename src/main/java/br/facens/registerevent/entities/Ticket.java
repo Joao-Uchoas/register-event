@@ -3,12 +3,16 @@ package br.facens.registerevent.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import br.facens.registerevent.enums.TicketType;
-
+@Entity
+@Table(name = "TB_TICKET")
 public class Ticket implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -20,7 +24,14 @@ public class Ticket implements Serializable {
 
     private Double price;
     
+    
     private TicketType type;
+
+    @ManyToOne
+    private Event event;
+
+    @ManyToOne
+    private Attend attend;
 
     public static long getSerialversionuid() {
         return serialVersionUID;
@@ -48,6 +59,12 @@ public class Ticket implements Serializable {
     }
     public void setType(TicketType type) {
         this.type = type;
+    }
+    public Event getEvent() {
+        return event;
+    }
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     @Override
