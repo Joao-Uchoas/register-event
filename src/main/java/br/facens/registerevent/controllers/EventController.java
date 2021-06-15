@@ -89,6 +89,16 @@ public class EventController {
         Event events = service.insertEventsPlace(idEvent,idPlace);
         return ResponseEntity.ok(events);
     }
+
+
+    @DeleteMapping("{idEvent}/places/{idPlace}")
+    public ResponseEntity<Event> deleteEventsPlace(@PathVariable Long idEvent, @PathVariable Long idPlace ){
+        service.deletePlace(idEvent,idPlace);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    
    
     
 

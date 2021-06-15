@@ -66,5 +66,7 @@ public class PlaceService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
     }
+
+    
     
 }

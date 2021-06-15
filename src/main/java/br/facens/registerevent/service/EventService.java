@@ -21,6 +21,7 @@ import br.facens.registerevent.dto.event.EventUpdateDTO;
 import br.facens.registerevent.entities.Event;
 import br.facens.registerevent.entities.Place;
 import br.facens.registerevent.repository.EventRepository;
+import br.facens.registerevent.repository.PlaceRepository;
 
 @Service
 public class EventService {
@@ -30,6 +31,9 @@ public class EventService {
     
     @Autowired
     private PlaceService servicePlace;
+
+    @Autowired
+    private PlaceRepository placeRepository;
 
     public Page<EventDTO> getEvents(PageRequest pageRequest, String name,String emailContact, LocalDate startDate,String description, Double priceTicket){
         Page<Event> list = repo.find(pageRequest, name, emailContact, startDate, description, priceTicket);
@@ -107,6 +111,22 @@ public class EventService {
         Place places = servicePlace.getPlaceEventById(idPlace);
         events.addPlace(places);
         return events;
+    }
+ 
+
+    public void deletePlace(Long idEvent, Long idPlace) {
+        try{
+            Event event = getEventPlaceById(idEvent);
+            Place place = servicePlace.getPlaceEventById(idPlace);
+            event.removePlace(place);
+            place.removeEvent(event);
+            repo.save(event);
+            placeRepository.save(place);
+            
+        }
+        catch(EmptyResultDataAccessException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event not found");
+        }
     }
 
 }

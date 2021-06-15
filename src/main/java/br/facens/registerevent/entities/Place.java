@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -110,5 +109,8 @@ public class Place implements Serializable{
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+    public void removeEvent(Event event) {
+        this.events.remove(event);
     }
 }
