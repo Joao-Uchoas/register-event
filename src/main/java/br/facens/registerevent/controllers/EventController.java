@@ -30,7 +30,6 @@ import br.facens.registerevent.service.EventService;
 
 @RestController
 @RequestMapping("/events")
-
 public class EventController {
     
     @Autowired
@@ -43,18 +42,15 @@ public class EventController {
         @RequestParam(value = "linesPerPage",   defaultValue = "5") Integer linesPerPage,
         @RequestParam(value = "direction",      defaultValue = "ASC") String direction,
         @RequestParam(value = "orderBy",        defaultValue = "id") String orderBy,
-        @RequestParam(value = "name",           defaultValue = "") String  name,
+        @RequestParam(value = "category",           defaultValue = "") String  category,
         @RequestParam(value = "emailContact",           defaultValue = "") String  emailContact,
-        @RequestParam(value = "startDate",      defaultValue = "01/01/1900") LocalDate startDate,// a data tem que colocar "dia/mes/ano" e não só um valor... 
-                                                                                                 //exemplo: 01 não vai achar o dia 01 ou o mes 01,
-                                                                                                 //mas acharia 01/01/0001.
-        @RequestParam(value = "description",    defaultValue = "") String  description,
+        @RequestParam(value = "name",    defaultValue = "") String  name,
         @RequestParam(value = "priceTicket",    defaultValue = "") Double  priceTicket
 
     ){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
 
-        Page<EventDTO> list = service.getEvents(pageRequest, name, emailContact, startDate, description, priceTicket);
+        Page<EventDTO> list = service.getEvents(pageRequest, category.trim(), emailContact.trim(), name.trim(), priceTicket);
         return ResponseEntity.ok(list);
     }
 
@@ -64,9 +60,9 @@ public class EventController {
         return ResponseEntity.ok(dto);
     }
 
-    @PostMapping
-    public ResponseEntity<EventDTO> insert(@Valid @RequestBody EventInsertDTO insertDto){
-        EventDTO dto = service.insert(insertDto);
+    @PostMapping("/places/{placeId}")
+    public ResponseEntity<EventDTO> insert(@PathVariable Long placeId, @Valid @RequestBody EventInsertDTO insertDto){
+        EventDTO dto = service.insert(placeId, insertDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
@@ -76,52 +72,5 @@ public class EventController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
-    @PutMapping("{id}")
-    public ResponseEntity<EventDTO> update(@PathVariable Long id,@Valid @RequestBody EventUpdateDTO updateDto){
-        EventDTO dto = service.update(id, updateDto);
-        return ResponseEntity.ok().body(dto);
-    }
-
-
-
-    @PostMapping("{idEvent}/places/{idPlace}")
-    public ResponseEntity<Event> insertEventsPlace(@PathVariable Long idEvent, @PathVariable Long idPlace ){
-        Event events = service.insertEventsPlace(idEvent,idPlace);
-        return ResponseEntity.ok(events);
-    }
-
-
-    @DeleteMapping("{idEvent}/places/{idPlace}")
-    public ResponseEntity<Event> deleteEventsPlace(@PathVariable Long idEvent, @PathVariable Long idPlace ){
-        service.deletePlace(idEvent,idPlace);
-        return ResponseEntity.noContent().build();
-    }
-
-
-    @GetMapping("{id}/tickets")
-    public ResponseEntity<EventTicketDTO> getEventTicketById(@PathVariable Long id){
-        EventTicketDTO dto = service.getEventTicketById(id);
-        return ResponseEntity.ok(dto);
-    }
-
-
-
-    @PostMapping("{id}/tickets")
-    public ResponseEntity<EventTicketDTO> insertEventsTicket(@RequestBody Event idEvent){
-        EventTicketDTO events = service.insertEventsPlace(idEvent);
-        return ResponseEntity.ok(events);
-    }
-
-
-
-    @DeleteMapping("{id}/tickets")
-    public ResponseEntity<EventTicketDTO> deleteEventsPlace(@PathVariable Long idEvent){
-        service.deleteTicket(idEvent);
-        return ResponseEntity.noContent().build();
-    }
-    
-   
-    
 
 }

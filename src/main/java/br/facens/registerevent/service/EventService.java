@@ -1,12 +1,12 @@
 package br.facens.registerevent.service;
 
 
-import java.time.LocalDate;
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-
+import br.facens.registerevent.dto.event.SeatDTO;
+import br.facens.registerevent.entities.Seat;
+import br.facens.registerevent.enums.Category;
+import br.facens.registerevent.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -17,12 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.facens.registerevent.dto.event.EventDTO;
 import br.facens.registerevent.dto.event.EventInsertDTO;
-import br.facens.registerevent.dto.event.EventTicketDTO;
-import br.facens.registerevent.dto.event.EventUpdateDTO;
 import br.facens.registerevent.entities.Event;
 import br.facens.registerevent.entities.Place;
-import br.facens.registerevent.entities.Ticket;
-import br.facens.registerevent.enums.TicketType;
 import br.facens.registerevent.repository.EventRepository;
 import br.facens.registerevent.repository.PlaceRepository;
 
@@ -31,67 +27,77 @@ public class EventService {
     
     @Autowired
     private EventRepository repo;
-    
+
     @Autowired
     private PlaceService servicePlace;
 
     @Autowired
     private PlaceRepository placeRepository;
 
-    public Page<EventDTO> getEvents(PageRequest pageRequest, String name,String emailContact, LocalDate startDate,String description, Double priceTicket){
-        Page<Event> list = repo.find(pageRequest, name, emailContact, startDate, description, priceTicket);
+    public Page<EventDTO> getEvents(PageRequest pageRequest, String category, String emailContact, String name, Double priceTicket){
+        Page<Event> list = repo.find(pageRequest, category, emailContact, name, priceTicket);
         return list.map( r -> new EventDTO(r));
     }
 
-
-//  toDTOList foi mudado para fazer a listagem paginada
-    /*
-    private List<RegisterDTO> toDTOList(List<Register> list) {
-        List<RegisterDTO> listDTO = new ArrayList<>();
-        for(Register r : list){
-            RegisterDTO dto = new RegisterDTO(r.getId(), r.getName(), r.getDescription(), r.getEmailContact());
-            listDTO.add(dto);
-        }
-        return listDTO;
-    }
-*/
     public EventDTO getEventById(Long id){
         Optional<Event> op = repo.findById(id);
         Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not foud"));
         return new EventDTO(reg);
     }
 
-    public Event getEventPlaceById(Long id){
-        Optional<Event> op = repo.findById(id);
-        Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not foud"));
-        return new Event(reg);
-    }
+    public EventDTO insert(Long placeId, EventInsertDTO eventDto){
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Place not found"));
 
-    public EventTicketDTO getTicketById(Long id){
-        Optional<Event> op = repo.findById(id);
-        Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not foud"));
-        return new EventTicketDTO(reg);
-    }
-    
+        Event entity = new Event(eventDto);
+        entity.setPlace(place);
 
-    
-    public EventDTO insert(EventInsertDTO dto){
-        Event entity = new Event(dto); 
-        if(entity.getStartDate().isAfter(entity.getEndDate()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data inicial não pode ser maior que a data final.");
-        else if(entity.getStartDate().isEqual(entity.getEndDate()) && entity.getStartTime().isAfter(entity.getEndTime()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O horario inicial não pode ser maior que o horario final.");
-        else if(entity.getAmountPayedTickets() > 0 && entity.getPriceTicket() <= 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O valor do ingresso informado tem que ser maior que zero.");
-        else if(entity.getAmountPayedTickets() <= 0 && entity.getPriceTicket() > 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O valor do ingresso informado tem que ser zero e não pode ser negativo.");
-        else if(entity.getAmountPayedTickets() <= 0 && entity.getAmountFreeTickets() <= 0)//Ver se esta funcionando ... testar depois.
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tem que ter no minino 1 ingresso para ter um evento e não pode ter valor negativo!");
-        else
-            entity = repo.save(entity);
+        for (SeatDTO seatDTO : eventDto.getSeats()) {
+            Seat seat = new Seat();
+            seat.setRow(seatDTO.getRow());
+            seat.setNumber(seatDTO.getNumber());
+            entity.getSeats().add(seat);
+        }
+
+        if (entity.getCategory() == Category.CINEMA || entity.getCategory() == Category.TEATRO ) {
+            entity.setAmountVIPTickets(0l);
+        }
+
+        // Verifica se o preço do ingresso é válido
+        if (entity.getPriceTicket() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O valor do ingresso deve ser maior que zero.");
+        }
+
+        // Verifica se a quantidade de ingressos é válida
+        if (entity.getAmountCommonTickets() <= 0 && entity.getAmountVIPTickets() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Deve haver pelo menos um ingresso disponível para o evento.");
+        }
+
+
+       // Servira para quando o usuario tentar comprar o ingresso
+//        // Regras específicas para Teatro e Cinema
+//        if (entity.getCategory() == Category.TEATRO || entity.getCategory() == Category.CINEMA) {
+//            String desiredRow = eventDto.getRow();
+//            Integer desiredNumber = eventDto.getNumber();
+//
+//            if (!entity.isSeatAvailable(desiredRow, desiredNumber)) {
+//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O lugar escolhido não está disponível.");
+//            }
+//        }
+//
+//        // Regras específicas para Shows
+//        if (entity.getCategory() == Category.SHOW) {
+//            // Se for um show, você pode querer verificar se os ingressos são VIP ou comuns.
+//            // Por exemplo:
+//            if (entity.getAmountVIPTickets() > 0 && entity.getAmountCommonTickets() > 0) {
+//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Para shows, os ingressos devem ser ou VIP ou comuns, não ambos.");
+//            }
+//        }
+
+        entity = repo.save(entity);
+
         return new EventDTO(entity);
     }
-
 
 
     public void delete(Long id){
@@ -103,77 +109,5 @@ public class EventService {
         }
     }
 
-    public EventDTO update(Long id, EventUpdateDTO dto){
-        try {
-            Event entity = repo.getOne(id);
-            entity.setName(dto.getName());
-            entity.setEmailContact(dto.getEmailContact());
-            entity = repo.save(entity);
-            return new EventDTO(entity);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
-        }
-    }
-
-    @Transactional
-    public Event insertEventsPlace(Long idEvent, Long idPlace) {
-        Event events = getEventPlaceById(idEvent);
-        Place places = servicePlace.getPlaceEventById(idPlace);
-        events.addPlace(places);
-        
-        return events;
-    }
- 
-
-    public void deletePlace(Long idEvent, Long idPlace) {
-        try{
-            Event event = getEventPlaceById(idEvent);
-            Place place = servicePlace.getPlaceEventById(idPlace);
-            event.removePlace(place);
-            place.removeEvent(event);
-            repo.save(event);
-            placeRepository.save(place);
-            
-        }
-        catch(EmptyResultDataAccessException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event not found");
-        }
-    }
-
-
-    public EventTicketDTO getEventTicketById(Long id) {
-        Optional<Event> op = repo.findById(id);
-        Event reg = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not foud"));
-        Long free = 0l;
-        Long payed = 0l;
-        for(Ticket t : reg.getTickets()){
-            if(t.getType().equals(TicketType.FREE)){
-                free++;
-            }else   
-                payed++;
-        }
-        return new EventTicketDTO(reg,free,payed);
-    }
-
-    //precisa ter o POST se não não tem sentido, mas esta criado.
-    public void deleteTicket(Long idEvent) {
-        try{
-            Event event = getEventPlaceById(idEvent);
-            event.removeTicket();
-            repo.save(event);            
-        }
-        catch(EmptyResultDataAccessException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event not found");
-        }
-    }
-
-    //talvez n estja funcionando
-    public EventTicketDTO insertEventsPlace(Event idEvent) {
-        EventTicketDTO entity = new EventTicketDTO(idEvent); 
- 
-   
-     
-        return entity;
-    }
-
 }
+

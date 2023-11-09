@@ -2,25 +2,18 @@ package br.facens.registerevent.entities;
 
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import br.facens.registerevent.enums.Category;
+import br.facens.registerevent.enums.CategoryConverter;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import br.facens.registerevent.dto.event.EventInsertDTO;
 import jdk.jfr.Timestamp;
@@ -34,17 +27,13 @@ public class Event implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "Preencher o nome.")
-    @Length(min = 3, max = 50, message = "O nome deve ter no minino 3 caracteres e no maximo 50 caracteres.")
+    @Convert(converter = CategoryConverter.class)
+    @Column(name = "category")
+    @NotNull(message = "Preencher o evento.")
+    private Category category;
+    @NotBlank(message = "Preencher o nome do evento.")
+    @Length(min = 3, max = 50, message = "O nome do evento deve ter no minino 3 caracteres e no maximo 50 caracteres.")
     private String name;
-    @NotBlank(message = "Preencher a descrição.")
-    @Length(min = 3, max = 70, message = "A descrição deve ter no minino 3 caracteres e no maximo 70 caracteres.")
-    private String description;
-
-    @DateTimeFormat(pattern = "yyy-MM-dd")
-    private LocalDate startDate;
-    @DateTimeFormat(pattern = "yyy-MM-dd")
-    private LocalDate endDate;
 
     @Timestamp
     private LocalTime startTime;
@@ -53,49 +42,46 @@ public class Event implements Serializable{
     @Email
     private String emailContact;
 
-    
-    private Long amountFreeTickets;
-    private Long amountPayedTickets;
+    @Column(name = "amount_vip_tickets")
+    private Long amountVIPTickets;
+    private Long amountCommonTickets;
 
     private Double priceTicket;
 
-    @ManyToMany
-    @JoinTable(
-        name = "TB_EVENT_PLACE",
-        joinColumns = @JoinColumn(name = "event_id"),
-        inverseJoinColumns = @JoinColumn(name = "place_id")
-    )
-    private List<Place> place = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "place_id")
+    private Place place;
     
     @ManyToOne
     @JoinColumn(name = "ADMIN_BASEUSER_ID")
     private Admin admin;
-    
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "event_id")
+    private List<Seat> seats = new ArrayList<>();
+
     @OneToMany
     @JoinColumn(name = "TICKET_ID")
     private List<Ticket> tickets;
-    
+
     
 // Metodos Constructs
     public Event() {
     }
     public Event(EventInsertDTO dto) {
+        this.category = dto.getCategory();
         this.name = dto.getName();
-        this.description = dto.getDescription();
-        this.startDate = dto.getStartDate();
-        this.endDate = dto.getEndDate();
         this.startTime = dto.getStartTime();
         this.endTime = dto.getEndTime();
         this.emailContact = dto.getEmailContact();
-        this.amountFreeTickets = dto.getAmountFreeTickets();
-        this.amountPayedTickets = dto.getAmountPayedTickets();
+        this.amountVIPTickets = dto.getAmountVIPTickets();
+        this.amountCommonTickets = dto.getAmountCommonTickets();
         this.priceTicket = dto.getPriceTicket();
     }
     public Event(Event reg) {
         this.id = reg.getId();
+        this.category = reg.getCategory();
         this.name = reg.getName();
-        this.description = reg.getDescription();
-        this.startDate = reg.getStartDate();
         this.startTime = reg.getStartTime();
         this.emailContact = reg.getEmailContact();
         this.priceTicket = reg.getPriceTicket();
@@ -103,102 +89,121 @@ public class Event implements Serializable{
         this.tickets = reg.getTickets();
     }
 
-    
-
-
-    // Metodos Getters
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
+
+
     public Long getId() {
         return id;
     }
-    public String getName() {
-        return name;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-    public String getEmailContact() {
-        return emailContact;
-    }
-    public Long getAmountFreeTickets() {
-        return amountFreeTickets;
-    }
-    public Long getAmountPayedTickets() {
-        return amountPayedTickets;
-    }
-    public double getPriceTicket() {
-        return priceTicket;
-    }
-    public List<Place> getPlace() {
-        return place;
-    }
-    public Admin getAdmin() {
-        return admin;
-    }
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-    
 
-// Metodos Setters
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
-    public void setDescription(String description) {
-        this.description = description;
+
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
+
+    public String getEmailContact() {
+        return emailContact;
+    }
+
     public void setEmailContact(String emailContact) {
         this.emailContact = emailContact;
     }
-    public void setAmountFreeTickets(Long amountFreeTickets) {
-        this.amountFreeTickets = amountFreeTickets;
-    }
-    public void setAmountPayedTickets(Long amountPayedTickets) {
-        this.amountPayedTickets = amountPayedTickets;
-    }
-    public void setPriceTicket(double priceTicket) {
-        this.priceTicket = priceTicket;
-    }
-    public void addPlace(Place place) {
-        this.place.add(place);
-    }
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
-    } 
-    public void addTickets(Ticket ticket) {
-        this.tickets.add(ticket);
+
+    public Long getAmountVIPTickets() {
+        return amountVIPTickets;
     }
 
+    public void setAmountVIPTickets(Long amountVIPTickets) {
+        this.amountVIPTickets = amountVIPTickets;
+    }
+
+    public Long getAmountCommonTickets() {
+        return amountCommonTickets;
+    }
+
+    public void setAmountCommonTickets(Long amountCommonTickets) {
+        this.amountCommonTickets = amountCommonTickets;
+    }
+
+    public Double getPriceTicket() {
+        return priceTicket;
+    }
+
+    public void setPriceTicket(Double priceTicket) {
+        this.priceTicket = priceTicket;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void addTickets(Ticket tickets) {
+        this.tickets.add(tickets);
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
+
+    public boolean isSeatAvailable(String row, Integer number) {
+        return seats.stream()
+                .anyMatch(seat -> seat.getRow().equals(row) &&
+                        seat.getNumber().equals(number) &&
+                        seat.getIsAvailable());
+    }
 
     // Metodo hash e equals
     @Override
@@ -224,14 +229,8 @@ public class Event implements Serializable{
             return false;
         return true;
     }
-    public void removePlace(Place place2) {
-        this.place.remove(place2);
-    }
     public void removeTicket() {
         this.tickets.removeAll(tickets);
     }
-    
-    
 
-    
 }

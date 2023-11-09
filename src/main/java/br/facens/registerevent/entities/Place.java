@@ -29,9 +29,9 @@ public class Place implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "Preencher o nome do local.")
+    @NotBlank(message = "Preencher o nome da cidade.")
     @Length(min = 3, max = 50, message = "O colocar no minimo 3 caracteres e no maximo 50.")
-    private String name;
+    private String city;
     @NotBlank(message = "Preencher o endereço do local.")
     @Length(min = 3, max = 50, message = "O colocar no minimo 3 caracteres e no maximo 50.")
     private String address;
@@ -43,19 +43,18 @@ public class Place implements Serializable{
         joinColumns = @JoinColumn(name = "place_id"),
         inverseJoinColumns = @JoinColumn(name = "event_id")
     )
-    private List<Event> events = new ArrayList<>(); 
-    
-    
+    private List<Event> events = new ArrayList<>();
+
     public Place() {
 
     }
     public Place(PlaceInsertDTO dto){
-        this.name = dto.getName();
+        this.city = dto.getCity();
         this.address = dto.getAddress();
     }
     public Place(Place reg){
         this.id = reg.getId();
-        this.name = reg.getName();
+        this.city = reg.getCity();
         this.address = reg.getAddress();
     }
 
@@ -68,12 +67,15 @@ public class Place implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
+
+    public String getCity() {
+        return city;
     }
-    public void setName(String name) {
-        this.name = name;
+
+    public void setCity(String city) {
+        this.city = city;
     }
+
     public String getAddress() {
         return address;
     }

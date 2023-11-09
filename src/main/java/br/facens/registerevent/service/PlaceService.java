@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import br.facens.registerevent.dto.place.PlaceDTO;
 import br.facens.registerevent.dto.place.PlaceInsertDTO;
-import br.facens.registerevent.dto.place.PlaceUpdateDTO;
 import br.facens.registerevent.entities.Place;
 import br.facens.registerevent.repository.PlaceRepository;
 import org.springframework.web.server.ResponseStatusException;
@@ -55,18 +54,4 @@ public class PlaceService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event not found");
         }
     }
-
-    public PlaceDTO update(Long id, PlaceUpdateDTO dto){
-        try {
-            Place entity = repo.getOne(id);
-            entity.setName(dto.getName());
-            entity = repo.save(entity);
-            return new PlaceDTO(entity);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
-        }
-    }
-
-    
-    
 }

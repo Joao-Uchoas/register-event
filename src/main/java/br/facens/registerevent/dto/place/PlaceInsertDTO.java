@@ -1,14 +1,14 @@
 package br.facens.registerevent.dto.place;
 
 public class PlaceInsertDTO {
-    private String name;
+    private String city;
     private String address;
 
-    public String getName() {
-        return name;
+    public String getCity() {
+        return city;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setCity(String city) {
+        this.city = city;
     }
     public String getAddress() {
         return address;

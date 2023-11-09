@@ -7,10 +7,13 @@ public class PlaceDTO {
     private Long id;
     private String address;
 
+    private String city;
+
     public PlaceDTO() {
     }
     public PlaceDTO(Place reg) {
         this.id = reg.getId();
+        this.city = reg.getCity();
         this.address = reg.getAddress();
     }
 
@@ -25,5 +28,11 @@ public class PlaceDTO {
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+    public String getCity() {
+        return city;
+    }
+    public void setCity(String city) {
+        this.city = city;
     }
 }

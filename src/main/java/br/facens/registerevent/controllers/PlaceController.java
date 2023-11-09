@@ -22,7 +22,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.facens.registerevent.dto.place.PlaceDTO;
 import br.facens.registerevent.dto.place.PlaceInsertDTO;
-import br.facens.registerevent.dto.place.PlaceUpdateDTO;
 import br.facens.registerevent.service.PlaceService;
 
 @RestController
@@ -63,12 +62,6 @@ public class PlaceController {
     public ResponseEntity<Void> delete(@PathVariable Long id){
         service.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("{id}")
-    public ResponseEntity<PlaceDTO> update(@PathVariable Long id,@Valid @RequestBody PlaceUpdateDTO updateDto){
-        PlaceDTO dto = service.update(id, updateDto);
-        return ResponseEntity.ok().body(dto);
     }
     
 }

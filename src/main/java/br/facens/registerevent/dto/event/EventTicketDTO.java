@@ -17,16 +17,16 @@ public class EventTicketDTO {
         
     }    
     public EventTicketDTO(Event event, Long free, Long payed) {
-        this.amountFreeTickets = event.getAmountFreeTickets();
-        this.amountPayedTickets = event.getAmountPayedTickets();
+        this.amountFreeTickets = event.getAmountVIPTickets();
+        this.amountPayedTickets = event.getAmountCommonTickets();
         this.freeTickectsSelled = free;
         this.payedTickectsSelled = payed;
         this.tickets = event.getTickets();
     }
     
     public EventTicketDTO(Event reg) {
-        this.amountFreeTickets = reg.getAmountFreeTickets();
-        this.amountPayedTickets = reg.getAmountPayedTickets();
+        this.amountFreeTickets = reg.getAmountVIPTickets();
+        this.amountPayedTickets = reg.getAmountCommonTickets();
         this.tickets = reg.getTickets();
     }
 
